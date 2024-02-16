@@ -14,7 +14,7 @@ router.get('/', async (req, res) => {
   const client = new MongoClient(url);
   await client.connect();
   const dbo = client.db(dbName);
-  const users = await dbo.collection('user').find({}).toArray();
+  const users = await dbo.collection('tb_user').find({}).toArray();
   await client.close();
   res.status(200).send(users);
 })
@@ -24,7 +24,7 @@ router.get('/:id', async (req, res) => {
   const client = new MongoClient(url);
   await client.connect();
   const dbo = client.db(dbName);
-  const user = await dbo.collection('user').findOne({ "id": id });
+  const user = await dbo.collection('tb_user').findOne({ "id": id });
   await client.close();
   res.status(200).send({
     "status": "ok",
@@ -77,12 +77,12 @@ router.post('/create', async function (req, res, next) {
   const dbo = client.db(dbName);
   var query = { "fname": user.fname };
   // dbo.collection('user').find(query)
-  await dbo.collection('user').find(query).toArray().then(result => {
+  await dbo.collection('tb_user').find(query).toArray().then(result => {
     if (result.length > 0) {
       res.json({ message: "The name already exists" });
     } else {
       bcrypt.hash(user.password, saltRounds, async function (err, hash) {
-        await dbo.collection('user').insertOne({
+        await dbo.collection('tb_user').insertOne({
           // client.db('mydb').collection('users').insertOne({
           id: parseInt(user.id),
           fname: user.fname,
@@ -116,7 +116,7 @@ router.put('/update', function (req, res, next) {
     await client.connect();
     // findOneAndUpdate
     const dbo = client.db(dbName);
-    await dbo.collection('user').updateOne({ 'id': id }, {
+    await dbo.collection('tb_user').updateOne({ 'id': id }, {
       "$set": {
         id: parseInt(user.id),
         fname: user.fname,
@@ -151,7 +151,7 @@ router.delete('/delete', async (req, res) => {
   const client = new MongoClient(url);
   await client.connect();
   const dbo = client.db(dbName);
-  await dbo.collection('user').deleteOne({ 'id': id }).then(user => {
+  await dbo.collection('tb_user').deleteOne({ 'id': id }).then(user => {
     if (user) {
       res.status(200).json({
         status: "ok",

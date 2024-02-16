@@ -8,13 +8,13 @@ var jwt = require('jsonwebtoken');
 const secret = 'Fullstack';
 require('dotenv').config()
 
-const dbName = 'mydb';
+const dbName = 'dbworkio';
 
 router.post('/', async (req, res) => {
   const client = new MongoClient(url);
   await client.connect();
   const dbo = client.db(dbName);
-  const user = await dbo.collection('users').findOne({ "email": req.body.email });
+  const user = await dbo.collection('tb_user').findOne({ "email": req.body.email });
   await client.close()
   bcrypt.compare(req.body.password, user.password, function (err, isLogin) {
     if (isLogin) {
