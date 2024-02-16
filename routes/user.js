@@ -1,12 +1,13 @@
 const express = require('express');
 const router = express.Router();
 const { MongoClient } = require("mongodb");
-const url = "mongodb://localhost:27017/";
 const bcrypt = require('bcrypt');
 const saltRounds = 10;
 var jwt = require('jsonwebtoken');
 const secret = 'Fullstack';
+require('dotenv').config();
 
+const url = process.env.ATLAS_URI;
 const dbName = 'dbworkio';
 
 router.get('/', async (req, res) => {
