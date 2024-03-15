@@ -12,11 +12,10 @@ router.post('/', async (req, res, next) => {
         if (error.name === 'TokenExpiredError') {
             res.status(401).send({ status: 'error', message: error.message });
             // console.log('A value was used incorrectly.');
-        }
-         else {
+        } else {
             res.status(500).send({ status: 'error', message: error.message });
             // console.log('At least not a type error.');
-         }
+        }
         // res.json({ status: 'error', message: error.message });
         // if (error instanceof TypeError) {
         //     // console.log('A value was used incorrectly.');

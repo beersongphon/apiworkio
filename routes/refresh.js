@@ -19,7 +19,7 @@ router.post('/', async (req, res, next) => {
     // })
     const decoded = jwt.verify(refreshToken, process.env.REFRESH_TOKEN_SECRET);
     const accessToken = jwt.sign({ userid: decoded.id, fullname: decoded.fullname, email: decoded.email }, process.env.ACCESS_TOKEN_SECRET, { expiresIn: '1h', algorithm: "HS256" })
-      res.json({ status: 'ok', accessToken: accessToken });
+    res.json({ status: 'ok', accessToken: accessToken });
   } catch (error) {
     res.json({ status: 'error', message: error.message });
   }
