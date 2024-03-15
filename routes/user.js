@@ -7,12 +7,13 @@ var jwt = require('jsonwebtoken');
 const secret = 'Fullstack';
 require('dotenv').config();
 
+const client = require('./../lib/dbconnect')
 const url = process.env.ATLAS_URI;
 const dbName = 'dbworkio';
 
 router.get('/', async (req, res) => {
   const id = parseInt(req.params.id);
-  const client = new MongoClient(url);
+  // const client = new MongoClient(url);
   await client.connect();
   const dbo = client.db(dbName);
   const users = await dbo.collection('tb_user').find({}).toArray();
@@ -22,7 +23,7 @@ router.get('/', async (req, res) => {
 
 router.get('/:id', async (req, res) => {
   const id = parseInt(req.params.id);
-  const client = new MongoClient(url);
+  // const client = new MongoClient(url);
   await client.connect();
   const dbo = client.db(dbName);
   const user = await dbo.collection('tb_user').findOne({ "id": id });
@@ -73,7 +74,7 @@ router.get('/:id', async (req, res) => {
 
 router.post('/create', async function (req, res, next) {
   const user = req.body;
-  const client = new MongoClient(url);
+  // const client = new MongoClient(url);
   await client.connect();
   const dbo = client.db(dbName);
   var query = { "fname": user.fname };
@@ -90,8 +91,8 @@ router.post('/create', async function (req, res, next) {
           lname: user.lname,
           username: user.username,
           email: user.email,
-          password: hash,
-          avatar: user.avatar
+          password: hash/*,
+          avatar: user.avatar*/
         }).then(user => {
           if (user) {
             res.status(200).json({
@@ -112,7 +113,7 @@ router.post('/create', async function (req, res, next) {
 router.put('/update', function (req, res, next) {
   const user = req.body;
   const id = parseInt(user.id);
-  const client = new MongoClient(url);
+  // const client = new MongoClient(url);
   bcrypt.hash(user.password, saltRounds, async function (err, hash) {
     await client.connect();
     // findOneAndUpdate
@@ -124,8 +125,8 @@ router.put('/update', function (req, res, next) {
         lname: user.lname,
         username: user.username,
         email: user.email,
-        password: hash,
-        avatar: user.avatar
+        password: hash/*,
+        avatar: user.avatar*/
       }
     }).then(user => {
       if (user) {
@@ -149,7 +150,7 @@ router.put('/update', function (req, res, next) {
 
 router.delete('/delete', async (req, res) => {
   const id = parseInt(req.body.id);
-  const client = new MongoClient(url);
+  // const client = new MongoClient(url);
   await client.connect();
   const dbo = client.db(dbName);
   await dbo.collection('tb_user').deleteOne({ 'id': id }).then(user => {

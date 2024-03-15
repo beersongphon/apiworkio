@@ -35,9 +35,9 @@ const dbName = 'dbworkio';
 
 router.post('/', async function (req, res, next) {
   // const client = new MongoClient(url);
-  // await client.connect();
+  await client.connect();
   const dbo = client.db(dbName);
-  await dbo.collection('tb_user').findOne({ "email": req.body.email }).then(result => {
+  await dbo.collection('tb_user').findOne({ "username": req.body.username }).then(result => {
     if (!result) {
       res.status(404).send({
         message: "Data Not Found"
